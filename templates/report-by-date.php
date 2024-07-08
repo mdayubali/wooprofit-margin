@@ -1,0 +1,39 @@
+<?php
+$plugin_dir = plugin_dir_path( __FILE__ );
+
+$file_to_include = $plugin_dir . '../wooprofit-margin.php';
+if ( file_exists( $file_to_include ) ) {
+	include_once( $file_to_include );
+} else {
+	echo 'File not found: ' . esc_html( $file_to_include );
+}
+?>
+<div class="wrap">
+    <p><?php esc_html_e('Date Range', 'wooprofit-margin'); ?></p>
+    <form name="custom-date-range-form" id="custom-date-range-form" method="post">
+        <input type="text" id="start_date" placeholder="Start Date">
+        <input type="text" id="end_date" placeholder="End Date">
+        <button type="submit" class="button button-primary">Filter</button>
+    </form>
+</div>
+
+<div class="wrap">
+    <ul class="woocommerce-summary has-4-items flex">
+        <div class="woocommerce-summary__item-container col-3">
+            <p>Order</p>
+            <div id="orders-list"></div>
+        </div>
+        <div class="woocommerce-summary__item-container col-3">
+            <p>Total Sales</p>
+            <div id="total-sales"></div>
+        </div>
+        <div class="woocommerce-summary__item-container col-3">
+            <p>Net Sales</p>
+            <div id="net-sales"></div>
+        </div>
+        <div class="woocommerce-summary__item-container col-3">
+            <p>Average Order Value</p>
+            <div id="average-order-value"></div>
+        </div>
+    </ul>
+</div>
