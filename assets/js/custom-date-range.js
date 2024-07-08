@@ -28,4 +28,58 @@ jQuery(document).ready(function($) {
             }
         });
     });
+
+
+    $('select').niceSelect();
+
+    $('#date-range-select').on('change', function() {
+        const selectedRange = $(this).val();
+        const today = new Date();
+        let startDate, endDate;
+
+        switch (selectedRange) {
+            case 'today':
+                startDate = today.toISOString().split('T')[0];
+                endDate = startDate;
+                break;
+            case 'yesterday':
+                const yesterday = new Date(today);
+                yesterday.setDate(today.getDate() - 1);
+                startDate = yesterday.toISOString().split('T')[0];
+                endDate = startDate;
+                break;
+            case 'last-7-days':
+                const last7Days = new Date(today);
+                last7Days.setDate(today.getDate() - 7);
+                startDate = last7Days.toISOString().split('T')[0];
+                endDate = today.toISOString().split('T')[0];
+                break;
+            case 'last-14-days':
+                const last14Days = new Date(today);
+                last14Days.setDate(today.getDate() - 14);
+                startDate = last14Days.toISOString().split('T')[0];
+                endDate = today.toISOString().split('T')[0];
+                break;
+            case 'this-month':
+                startDate = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+                endDate = today.toISOString().split('T')[0];
+                break;
+            case 'last-month':
+                const firstDayLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                const lastDayLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                startDate = firstDayLastMonth.toISOString().split('T')[0];
+                endDate = lastDayLastMonth.toISOString().split('T')[0];
+                break;
+            case 'custom':
+                startDate = '';
+                endDate = '';
+                break;
+            default:
+                startDate = '';
+                endDate = '';
+        }
+
+        $('#start_date').val(startDate);
+        $('#end_date').val(endDate);
+    });
 });

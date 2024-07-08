@@ -94,36 +94,24 @@ class Wooprofit_Margin {
 		return $settings;
 	}
 
-	function wooprofit_assetsloader($hook ) {
+	function wooprofit_assetsloader($hook ): void {
 		$assets_dir = plugins_url( 'assets/', __FILE__ );
 
-		wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_style('jquery-ui', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
-		wp_enqueue_script('custom-date-range-script', $assets_dir. 'js/custom-date-range.js', array('jquery'), '1.0', true);
-
 		wp_enqueue_style( 'wooprofit-style', $assets_dir . 'css/style.css' );
+		wp_enqueue_style( 'wooprofit-nice', $assets_dir . 'css/nice-select.css' );
 		if ( $hook == 'post.php' || $hook == 'post-new.php' ) {
 			global $post_type;
 			if ( $post_type == 'product' ) {
 				wp_enqueue_script( 'wooprofit', $assets_dir . 'js/profit-show.js', array( 'jquery' ), '1.0', true );
 			}
 		}
+		wp_enqueue_script('jquery-ui-datepicker');
+		wp_enqueue_style('jquery-ui', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
+		wp_enqueue_script('custom-date-range-script', $assets_dir. 'js/custom-date-range.js', array('jquery'), '1.0', true);
+		wp_enqueue_script('nice-select', $assets_dir. 'js/jquery.nice-select.min.js', array(), '1.0', true);
 	}
 
-//	function wooprofit_assetsloader_product_edit_page( $hook ) {
-//		$assets_dir = plugins_url( 'assets/', __FILE__ );
-//		// Load only on the product edit page
-//		if ( $hook == 'post.php' || $hook == 'post-new.php' ) {
-//			global $post_type;
-//			if ( $post_type == 'product' ) {
-//				$assets_dir = plugins_url( 'assets/', __FILE__ );
-//				wp_enqueue_style( 'wooprofit', $assets_dir . 'css/style.css' );
-//				wp_enqueue_script( 'wooprofit', $assets_dir . 'js/profit-show.js', array( 'jquery' ), '1.0', true );
-//			}
-//		}
-//	}
-
-	function wooprofit_admin_menu() {
+	function wooprofit_admin_menu(): void {
 		add_submenu_page(
 			'wc-admin&path=/analytics/overview', // Correct parent slug for WooCommerce Analytics
 			__( 'Profit', 'wooprofit-margin' ), // Page title
@@ -134,7 +122,7 @@ class Wooprofit_Margin {
 		);
 	}
 
-	function wooprofit_total_stock_amount() {
+	function wooprofit_total_stock_amount(): ?int {
 		$total_stock = 0;
 		// Ensure WooCommerce is active
 		if ( class_exists( 'WooCommerce' ) ) {
@@ -186,7 +174,7 @@ class Wooprofit_Margin {
 		return $total_price;
 	}
 
-	function wooprofit_total_cost_amount() {
+	function wooprofit_total_cost_amount(): float|int {
 		$total_cost = 0;
 
 		// Ensure WooCommerce is active
@@ -215,14 +203,14 @@ class Wooprofit_Margin {
 		return $total_cost;
 	}
 
-	function wooprofit_total_profit_amount() {
+	function wooprofit_total_profit_amount(): float|int {
 		$total_profit = $this->wooprofit_total_price_amount() - $this->wooprofit_total_cost_amount();
 		return $total_profit;
 
 	}
 
 	//  cost field
-	function add_cost_field() {
+	function add_cost_field(): void {
 		woocommerce_wp_text_input(
 			array(
 				'id'          => '_product_cost',
@@ -393,29 +381,6 @@ class Wooprofit_Margin {
 				'average_order_value' => wc_price(0),
 			));
 		}
-
-		// Check if any orders are found
-		/*if (!empty($orders)) {
-			// Count the total number of orders
-			$total_orders = count($orders);
-			// Calculate total sales and net sales
-			foreach ($orders as $order) {
-				$total_sales += $order->get_total(); // Total sales including tax
-				$net_sales += $order->get_total() - $order->get_total_tax(); // Net sales excluding tax
-			}
-
-			// Calculate average order value
-			$average_order_value = $total_sales / $total_orders;
-
-			// Display the sales summary
-			echo '<p>' . __('Total Orders:', 'wooprit-margin') . ' ' . $total_orders . '</p>';
-			echo '<p>' . __('Total Sales:', 'wooprit-margin') . ' ' . wc_price($total_sales) . '</p>';
-			echo '<p>' . __('Net Sales:', 'wooprit-margin') . ' ' . wc_price($net_sales) . '</p>';
-			echo '<p>' . __('Average Order Value:', 'wooprit-margin') . ' ' . wc_price($average_order_value) . '</p>';
-
-		} else {
-			echo '<p>' . __('No orders found for this date range.', 'wooprit-margin') . '</p>';
-		}*/
 
 		wp_die();
 

@@ -8,15 +8,35 @@ if ( file_exists( $file_to_include ) ) {
 	echo 'File not found: ' . esc_html( $file_to_include );
 }
 ?>
+
+<!--<div class="wrap">-->
+<!--    <p>--><?php //esc_html_e('Date Range', 'wooprofit-margin'); ?><!--</p>-->
+<!--    <form name="custom-date-range-form" id="custom-date-range-form" method="post">-->
+<!--        <input type="text" id="start_date" placeholder="Start Date">-->
+<!--        <input type="text" id="end_date" placeholder="End Date">-->
+<!--        <button type="submit" class="button button-primary">Filter</button>-->
+<!--    </form>-->
+<!--</div>-->
 <div class="wrap">
     <p><?php esc_html_e('Date Range', 'wooprofit-margin'); ?></p>
     <form name="custom-date-range-form" id="custom-date-range-form" method="post">
-        <input type="text" id="start_date" placeholder="Start Date">
-        <input type="text" id="end_date" placeholder="End Date">
-        <button type="submit" class="button button-primary">Filter</button>
+        <select id="date-range-select" class="nice-select">
+            <option value="custom"><?php esc_html_e('Custom', 'wooprofit-margin'); ?></option>
+            <option value="today"><?php esc_html_e('Today', 'wooprofit-margin'); ?></option>
+            <option value="yesterday"><?php esc_html_e('Yesterday', 'wooprofit-margin'); ?></option>
+            <option value="last-7-days"><?php esc_html_e('Last 7 Days', 'wooprofit-margin'); ?></option>
+            <option value="last-14-days"><?php esc_html_e('Last 14 Days', 'wooprofit-margin'); ?></option>
+            <option value="this-month"><?php esc_html_e('This Month', 'wooprofit-margin'); ?></option>
+            <option value="last-month"><?php esc_html_e('Last Month', 'wooprofit-margin'); ?></option>
+            <!-- Add more options as needed -->
+        </select>
+
+            <input class="" type="text" id="start_date" placeholder="Start Date">
+            <input class="" type="text" id="end_date" placeholder="End Date">
+            <button class="" type="submit" class="button button-primary">Filter</button>
+
     </form>
 </div>
-
 <div class="wrap">
     <ul class="woocommerce-summary has-4-items flex">
         <div class="woocommerce-summary__item-container col-3">
