@@ -1,5 +1,5 @@
 <?php
-
+Namespace Daterange;
 class Date_range{
 
 	function custom_get_orders_by_date_range() {

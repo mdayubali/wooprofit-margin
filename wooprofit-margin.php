@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-define( 'WOOPROFIT_COST_SETTINGS_PLUGIN_FILE', __FILE__ );
+const WOOPROFIT_COST_SETTINGS_PLUGIN_FILE = __FILE__;
 
 class Wooprofit_Margin {
 
@@ -33,8 +33,6 @@ class Wooprofit_Margin {
 	}
 
 	public function wooprofit_init(): void {
-		$this->wooprofit_total_stock_amount();
-		$this->wooprofit_total_profit_amount();
 
 		add_action( 'admin_menu', [ $this, 'wooprofit_admin_menu' ], 99 );
 		/**
@@ -47,8 +45,6 @@ class Wooprofit_Margin {
 		 */
 		add_action( 'woocommerce_product_options_general_product_data', array( $this, 'add_cost_field' ) );
 		add_action( 'woocommerce_process_product_meta', array( $this, 'save_cost_field' ) );
-		add_action( 'woocommerce_admin_order_item_headers', array( $this, 'add_order_item_cost_header' ) );
-		add_action( 'woocommerce_admin_order_item_values', array( $this, 'add_order_item_cost_value' ), 10, 3 );
 		add_filter( 'manage_product_posts_columns', array( $this, 'add_cost_and_profit_column_header' ), 20 );
 		add_action( 'manage_product_posts_custom_column', array( $this, 'populate_cost_and_profit_column_content' ), 20, 2 );
 		/**
@@ -71,8 +67,6 @@ class Wooprofit_Margin {
 		/**
 		 *Date range
 		 */
-		add_action( 'admin_enqueue_scripts', [ $this, 'custom_woocommerce_admin_enqueue_scripts' ] );
-		add_action( 'woocommerce_admin_reports', [ $this, 'custom_woocommerce_admin_date_range_picker' ] );
 		add_action( 'wp_ajax_get_orders_by_date_range', [ $this, 'custom_get_orders_by_date_range' ] );
 		add_action( 'wp_ajax_nopriv_get_orders_by_date_range', [ $this, 'custom_get_orders_by_date_range' ] );
 
@@ -115,12 +109,12 @@ class Wooprofit_Margin {
 
 	function wooprofit_admin_menu(): void {
 		add_submenu_page(
-			'wc-admin&path=/analytics/overview', // Correct parent slug for WooCommerce Analytics
-			__( 'Profit', 'wooprofit-margin' ), // Page title
-			__( 'Profit Margin', 'wooprofit-margin' ), // Menu title
-			'manage_woocommerce', // Capability
-			'wc-analytics-profit', // Menu slug
-			array( $this, 'wooprofit_page' ) // Callback function
+			'wc-admin&path=/analytics/overview',
+			__( 'Profit', 'wooprofit-margin' ),
+			__( 'Profit Margin', 'wooprofit-margin' ),
+			'manage_woocommerce',
+			'wc-analytics-profit',
+			[ $this, 'wooprofit_page']
 		);
 	}
 
@@ -206,10 +200,8 @@ class Wooprofit_Margin {
 	}
 
 	function wooprofit_total_profit_amount(): float|int {
-		$total_profit = $this->wooprofit_total_price_amount() - $this->wooprofit_total_cost_amount();
 
-		return $total_profit;
-
+		return  $this->wooprofit_total_price_amount() - $this->wooprofit_total_cost_amount();
 	}
 
 	//  cost field
@@ -232,17 +224,6 @@ class Wooprofit_Margin {
 		$product_cost = isset( $_POST['_product_cost'] ) ? sanitize_text_field( $_POST['_product_cost'] ) : '';
 		update_post_meta( $post_id, '_product_cost', $product_cost );
 	}
-
-	function add_order_item_cost_header(): void {
-		echo '<th class="cost-price">' . __( 'Cost Price', 'wooprofit-margin' ) . '</th>';
-	}
-
-	function add_order_item_cost_value( $_product, $item, $item_id ): void {
-		$product_cost = get_post_meta( $_product->get_id(), '_product_cost', true );
-		echo '<td class="cost-price">' . esc_html( wc_price( $product_cost ) ) . '</td>';
-
-	}
-
 	/**
 	 * Add custom columns to the products admin page
 	 **/
@@ -327,20 +308,7 @@ class Wooprofit_Margin {
 
 	/* Date range */
 
-	function custom_woocommerce_admin_enqueue_scripts( $hook ): void {
-		if ( 'woocommerce_page_wc-reports' != $hook ) {
-			return;
-		}
-	}
-
-	function custom_woocommerce_admin_date_range_picker(): void {
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			return;
-		}
-	}
-
-	function custom_get_orders_by_date_range() {
-
+	function custom_get_orders_by_date_range(): void {
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'wooprit-margin' ) );
 		}
@@ -360,34 +328,6 @@ class Wooprofit_Margin {
 		);
 
 		$orders = wc_get_orders( $args );
-
-		/*if ( ! empty( $orders ) ) {
-			$total_orders = count( $orders );
-			$total_sales  = 0;
-			$net_sales    = 0;
-
-			foreach ( $orders as $order ) {
-				$total_sales += $order->get_total();
-				$net_sales   += $order->get_total() - $order->get_total_tax();
-			}
-
-			$average_order_value = $total_orders ? $total_sales / $total_orders : 0;
-
-			echo json_encode( array(
-				'total_orders'        => $total_orders,
-				'total_sales'         => wc_price( $total_sales ),
-				'net_sales'           => wc_price( $net_sales ),
-				'average_order_value' => wc_price( $average_order_value ),
-			) );
-		} else {
-			echo json_encode( array(
-				'total_orders'        => 0,
-				'total_sales'         => wc_price( 0 ),
-				'net_sales'           => wc_price( 0 ),
-				'average_order_value' => wc_price( 0 ),
-			) );
-		}*/
-
 
 		if (!empty($orders)) {
 			$total_orders = count($orders);
@@ -415,12 +355,14 @@ class Wooprofit_Margin {
 				// Now you can calculate the profit based on the total cost and the order total
 				/*
 				$order_total = $order->get_total();
-				$profit = $order_total - $total_cost;*/
+				$total_profit = $order_total - $total_cost;*/
 			}
 			/*$order_total = $order->get_total();
 			$total_profit = $order_total - $total_cost;*/
-			$average_order_value = $total_orders ? $total_sales / $total_orders : 0;
+
 			$total_profit = $net_sales - $total_cost;
+			$average_order_value = $total_orders ? $total_sales / $total_orders : 0;
+
 
 			echo json_encode(array(
 				'total_orders' => $total_orders,
