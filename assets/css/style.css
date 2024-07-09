@@ -1,4 +1,4 @@
-.container{
+.wooprifit_container{
     width: 1140px;
     margin: 0 auto;
     display: block;
@@ -8,23 +8,37 @@
 }
 .flex{
     display: flex;
-    justity-content: center;
+    justify-content: center;
     align-items: center;
 }
-.row{
-    margin: 20px;
+.wooprofit_row{
     border: 1px solid #716b6b;
     padding: 20px;
     border-radius: 8px;
 }
+
 .col-3{
+    width: 33.3%;
+    padding: 10px;
+    border: 1px solid #d8d8d8;
+    margin-right: 3px;
+    border-radius: 3px;
+}
+.col-4{
     width: 25%;
     padding: 10px;
     border: 1px solid #d8d8d8;
     margin-right: 3px;
     border-radius: 3px;
 }
-.row :last-child{
+.col-5{
+    width: 20%;
+    padding: 10px;
+    border: 1px solid #d8d8d8;
+    margin-right: 3px;
+    border-radius: 3px;
+}
+.wooprofit_row :last-child{
     margin-right: 0px;
 }
 .text-center{
