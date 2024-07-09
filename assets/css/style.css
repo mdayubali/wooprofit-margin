@@ -19,25 +19,22 @@
 
 .col-3{
     width: 33.3%;
-    padding: 10px;
-    border: 1px solid #d8d8d8;
-    margin-right: 3px;
-    border-radius: 3px;
+
 }
 .col-4{
     width: 25%;
-    padding: 10px;
-    border: 1px solid #d8d8d8;
-    margin-right: 3px;
-    border-radius: 3px;
 }
 .col-5{
     width: 20%;
+}
+.col{
     padding: 10px;
     border: 1px solid #d8d8d8;
     margin-right: 3px;
     border-radius: 3px;
+    width: -webkit-fill-available;
 }
+
 .wooprofit_row :last-child{
     margin-right: 0px;
 }
@@ -86,4 +83,12 @@
 
 #custom-filter-by-date:hover {
     background-color: #005a9c;
+}
+
+.profit-positive {
+    color: green;
+}
+
+.profit-negative {
+    color: red;
 }

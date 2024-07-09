@@ -31,25 +31,40 @@ if ( file_exists( $file_to_include ) ) {
 </div>
 <div class="wrap">
     <ul class="woocommerce-summary has-4-items flex">
-        <div class="woocommerce-summary__item-container col-5">
+        <div class="woocommerce-summary__item-container col">
             <p>Order</p>
             <div id="orders-list"></div>
         </div>
-        <div class="woocommerce-summary__item-container col-5">
+        <div class="woocommerce-summary__item-container col">
             <p>Total Sales</p>
             <div id="total-sales"></div>
         </div>
-        <div class="woocommerce-summary__item-container col-5">
+        <div class="woocommerce-summary__item-container col">
             <p>Net Sales</p>
             <div id="net-sales"></div>
         </div>
-        <div class="woocommerce-summary__item-container col-5">
+        <div class="woocommerce-summary__item-container col">
             <p>Average Order Value</p>
             <div id="average-order-value"></div>
         </div>
-        <div class="woocommerce-summary__item-container col-5">
-            <p>Profit/Loss</p>
-            <div id="profit"></div>
+        <div class="woocommerce-summary__item-container col">
+            <p>Cost</p>
+            <div id="total-cost"></div>
         </div>
+        <div class="woocommerce-summary__item-container col">
+            <p>Average Daily Profit </p>
+            <div id=""></div>
+        </div>
+        <div class="woocommerce-summary__item-container col">
+            <p>Average Order profit
+            </p>
+            <div id=""></div>
+        </div>
+        <div class="woocommerce-summary__item-container col">
+            <p>Total Profit</p>
+            <div id="profit"></div>
+
+        </div>
+
     </ul>
 </div>

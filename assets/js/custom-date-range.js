@@ -73,11 +73,23 @@ jQuery(document).ready(function($) {
             success: function(response) {
 
                 const data = JSON.parse(response);
+
                 $('#orders-list').html(data.total_orders);
                 $('#total-sales').html(data.total_sales);
                 $('#net-sales').html(data.net_sales);
+                $('#total-cost').html(data.total_cost);
                 $('#average-order-value').html(data.average_order_value);
-                $('#profit').html(data.profit);
+                 $('#profit').html(data.profit).attr('class', data.profit_class);
+
+               /* const profitElement = $('#profit');
+                const profitPercentage = data.profit_percentage;
+
+                // Check if profit percentage is positive or negative
+                if (profitPercentage >= 0) {
+                    profitElement.html(data.profit + ' (' + profitPercentage + '%)').css('color', 'green');
+                } else {
+                    profitElement.html(data.profit + ' (' + profitPercentage + '%)').css('color', 'red');
+                }*/
             }
 
         });

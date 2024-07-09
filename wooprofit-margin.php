@@ -114,7 +114,7 @@ class Wooprofit_Margin {
 			__( 'Profit Margin', 'wooprofit-margin' ),
 			'manage_woocommerce',
 			'wc-analytics-profit',
-			[ $this, 'wooprofit_page']
+			[ $this, 'wooprofit_page' ]
 		);
 	}
 
@@ -201,7 +201,7 @@ class Wooprofit_Margin {
 
 	function wooprofit_total_profit_amount(): float|int {
 
-		return  $this->wooprofit_total_price_amount() - $this->wooprofit_total_cost_amount();
+		return $this->wooprofit_total_price_amount() - $this->wooprofit_total_cost_amount();
 	}
 
 	//  cost field
@@ -224,6 +224,7 @@ class Wooprofit_Margin {
 		$product_cost = isset( $_POST['_product_cost'] ) ? sanitize_text_field( $_POST['_product_cost'] ) : '';
 		update_post_meta( $post_id, '_product_cost', $product_cost );
 	}
+
 	/**
 	 * Add custom columns to the products admin page
 	 **/
@@ -329,58 +330,61 @@ class Wooprofit_Margin {
 
 		$orders = wc_get_orders( $args );
 
-		if (!empty($orders)) {
-			$total_orders = count($orders);
-			$total_sales = 0;
-			$net_sales = 0;
-			$total_cost = 0;
+		if ( ! empty( $orders ) ) {
+			$total_orders = count( $orders );
+			$total_sales  = 0;
+			$net_sales    = 0;
+			$total_cost   = 0;
 
-			foreach ($orders as $order) {
+			foreach ( $orders as $order ) {
 				$total_sales += $order->get_total();
-				$net_sales += $order->get_total() - $order->get_total_tax();
+				$net_sales   += $order->get_total() - $order->get_total_tax();
 
-				foreach ($order->get_items() as $item) {
-					$product_id = $item->get_product_id();
-					$product_cost = get_post_meta($product_id, '_product_cost', true);
+				foreach ( $order->get_items() as $item ) {
+					$product_id   = $item->get_product_id();
+					$product_cost = get_post_meta( $product_id, '_product_cost', true );
 
 					// Ensure that the product cost is a valid number
-					if ($product_cost === '') {
+					if ( $product_cost === '' ) {
 						$product_cost = 0; // Default to 0 if the meta key does not exist
 					} else {
-						$product_cost = floatval($product_cost);
+						$product_cost = floatval( $product_cost );
 					}
 
 					$total_cost += $product_cost * $item->get_quantity();
 				}
 				// Now you can calculate the profit based on the total cost and the order total
-				$total_profit = $net_sales - $total_cost;
+//				$total_profit = $net_sales - $total_cost;
 			}
 
-//			$total_profit = $net_sales - $total_cost;
+			$total_profit        = $net_sales - $total_cost;
+			$profit_class        = $total_profit > 0 ? 'profit-positive' : 'profit-negative';
 			$average_order_value = $total_orders ? $total_sales / $total_orders : 0;
 
-			echo json_encode(array(
-				'total_orders' => $total_orders,
-				'total_sales' => wc_price($total_sales),
-				'net_sales' => wc_price($net_sales),
-				'average_order_value' => wc_price($average_order_value),
-				'profit' => '<p style="color:green;">'.wc_price($total_profit).'</p>'
+			echo json_encode( array(
+				'total_orders'        => $total_orders,
+				'total_sales'         => wc_price( $total_sales ),
+				'net_sales'           => wc_price( $net_sales ),
+				'total_cost'           => wc_price( $total_cost ),
+				'average_order_value' => wc_price( $average_order_value ),
+				'profit'              => wc_price( $total_profit ),
+				'profit_class'        => $profit_class
 
-			));
+			) );
 		} else {
-			echo json_encode(array(
-				'total_orders' => 0,
-				'total_sales' => wc_price(0),
-				'net_sales' => wc_price(0),
-				'average_order_value' => wc_price(0),
-				'profit' => wc_price(0)
-			));
+			echo json_encode( array(
+				'total_orders'        => 0,
+				'total_sales'         => wc_price( 0 ),
+				'net_sales'           => wc_price( 0 ),
+				'total_cost'           => wc_price( 0 ),
+				'average_order_value' => wc_price( 0 ),
+				'profit'              => wc_price( 0 ),
+				'profit_class'        => 'profit-negative'
+			) );
 		}
 		wp_reset_postdata();
 		wp_die();
 	}
-
-
 }
 
 new Wooprofit_Margin();
