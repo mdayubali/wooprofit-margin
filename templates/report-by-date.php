@@ -48,7 +48,7 @@ if ( file_exists( $file_to_include ) ) {
             <div id="average-order-value"></div>
         </div>
         <div class="woocommerce-summary__item-container col-5">
-            <p>Profit</p>
+            <p>Profit/Loss</p>
             <div id="profit"></div>
         </div>
     </ul>

@@ -353,23 +353,19 @@ class Wooprofit_Margin {
 					$total_cost += $product_cost * $item->get_quantity();
 				}
 				// Now you can calculate the profit based on the total cost and the order total
-				/*
-				$order_total = $order->get_total();
-				$total_profit = $order_total - $total_cost;*/
+				$total_profit = $net_sales - $total_cost;
 			}
-			/*$order_total = $order->get_total();
-			$total_profit = $order_total - $total_cost;*/
 
-			$total_profit = $net_sales - $total_cost;
+//			$total_profit = $net_sales - $total_cost;
 			$average_order_value = $total_orders ? $total_sales / $total_orders : 0;
-
 
 			echo json_encode(array(
 				'total_orders' => $total_orders,
 				'total_sales' => wc_price($total_sales),
 				'net_sales' => wc_price($net_sales),
 				'average_order_value' => wc_price($average_order_value),
-				'profit' => wc_price($total_profit)
+				'profit' => '<p style="color:green;">'.wc_price($total_profit).'</p>'
+
 			));
 		} else {
 			echo json_encode(array(
@@ -380,7 +376,6 @@ class Wooprofit_Margin {
 				'profit' => wc_price(0)
 			));
 		}
-
 		wp_reset_postdata();
 		wp_die();
 	}
