@@ -13,7 +13,7 @@ if ( file_exists( $file_to_include ) ) {
     <p><?php esc_html_e('Date Range', 'wooprofit-margin'); ?></p>
     <form name="custom-date-range-form" id="custom-date-range-form" method="post">
         <select id="date-range-select" class="nice-select">
-            <option value="custom"><?php esc_html_e('Custom', 'wooprofit-margin'); ?></option>
+<!--            <option value="custom">--><?php //esc_html_e('Custom', 'wooprofit-margin'); ?><!--</option>-->
             <option value="today"><?php esc_html_e('Today', 'wooprofit-margin'); ?></option>
             <option value="yesterday"><?php esc_html_e('Yesterday', 'wooprofit-margin'); ?></option>
             <option value="last-7-days"><?php esc_html_e('Last 7 Days', 'wooprofit-margin'); ?></option>
@@ -53,17 +53,16 @@ if ( file_exists( $file_to_include ) ) {
         </div>
         <div class="woocommerce-summary__item-container col">
             <p>Average Daily Profit </p>
-            <div id=""></div>
+            <div id="average-profit"></div>
         </div>
         <div class="woocommerce-summary__item-container col">
             <p>Average Order profit
             </p>
-            <div id=""></div>
+            <div id="average-order-profit"></div>
         </div>
         <div class="woocommerce-summary__item-container col">
             <p>Total Profit</p>
             <div id="profit"></div>
-
         </div>
 
     </ul>

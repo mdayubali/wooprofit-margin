@@ -39,10 +39,10 @@ jQuery(document).ready(function($) {
                 startDate = firstDayLastMonth.toISOString().split('T')[0];
                 endDate = lastDayLastMonth.toISOString().split('T')[0];
                 break;
-            case 'custom':
+            /*case 'custom':
                 startDate = '';
                 endDate = '';
-                break;
+                break;*/
             default:
                 startDate = '';
                 endDate = '';
@@ -79,21 +79,13 @@ jQuery(document).ready(function($) {
                 $('#net-sales').html(data.net_sales);
                 $('#total-cost').html(data.total_cost);
                 $('#average-order-value').html(data.average_order_value);
-                 $('#profit').html(data.profit).attr('class', data.profit_class);
-
-               /* const profitElement = $('#profit');
-                const profitPercentage = data.profit_percentage;
-
-                // Check if profit percentage is positive or negative
-                if (profitPercentage >= 0) {
-                    profitElement.html(data.profit + ' (' + profitPercentage + '%)').css('color', 'green');
-                } else {
-                    profitElement.html(data.profit + ' (' + profitPercentage + '%)').css('color', 'red');
-                }*/
+                $('#profit').html(data.profit).attr('class', data.profit_class);
+                $('#average-profit').html(data.average_profit);
+                $('#average-order-profit').html(data.average_order_profit);
             }
 
         });
     });
-
+    $('#date-range-select').val('today').change();
 });
 

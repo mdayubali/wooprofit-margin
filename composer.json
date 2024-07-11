@@ -1,0 +1,13 @@
+{
+    "name": "mdayubali/wooprofit-margin",
+    "description": "wooprofit margin for filtering data  from the woocommerce",
+    "type": "wordpress-plugin",
+    "license": "GPLv2",
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Wooprofit\\Margin\\": "includes/"
+        }
+    }
+}

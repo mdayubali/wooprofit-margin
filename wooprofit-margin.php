@@ -19,6 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 const WOOPROFIT_COST_SETTINGS_PLUGIN_FILE = __FILE__;
 
 class Wooprofit_Margin {
@@ -278,7 +280,6 @@ class Wooprofit_Margin {
 	function make_cost_and_profit_column_sortable( $columns ) {
 		$columns['product_cost']   = 'product_cost';
 		$columns['product_profit'] = 'product_profit';
-
 		return $columns;
 	}
 
@@ -286,7 +287,6 @@ class Wooprofit_Margin {
 		if ( ! is_admin() || ! $query->is_main_query() ) {
 			return;
 		}
-
 		$orderby = $query->get( 'orderby' );
 
 		if ( 'product_cost' === $orderby ) {
@@ -310,6 +310,7 @@ class Wooprofit_Margin {
 	/* Date range */
 
 	function custom_get_orders_by_date_range(): void {
+
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'wooprit-margin' ) );
 		}
@@ -353,13 +354,15 @@ class Wooprofit_Margin {
 
 					$total_cost += $product_cost * $item->get_quantity();
 				}
-				// Now you can calculate the profit based on the total cost and the order total
-//				$total_profit = $net_sales - $total_cost;
+
 			}
 
 			$total_profit        = $net_sales - $total_cost;
 			$profit_class        = $total_profit > 0 ? 'profit-positive' : 'profit-negative';
 			$average_order_value = $total_orders ? $total_sales / $total_orders : 0;
+			$average_profit      = $total_profit / (strtotime($end_date) - strtotime($start_date)) * 86400;
+			$average_order_profit = $total_orders ? $total_profit / $total_orders : 0;
+
 
 			echo json_encode( array(
 				'total_orders'        => $total_orders,
@@ -368,7 +371,9 @@ class Wooprofit_Margin {
 				'total_cost'           => wc_price( $total_cost ),
 				'average_order_value' => wc_price( $average_order_value ),
 				'profit'              => wc_price( $total_profit ),
-				'profit_class'        => $profit_class
+				'profit_class'        => $profit_class,
+				'average_profit'      => wc_price( $average_profit ),
+				'average_order_profit' => wc_price( $average_order_profit ),
 
 			) );
 		} else {
@@ -379,7 +384,10 @@ class Wooprofit_Margin {
 				'total_cost'           => wc_price( 0 ),
 				'average_order_value' => wc_price( 0 ),
 				'profit'              => wc_price( 0 ),
-				'profit_class'        => 'profit-negative'
+				'profit_class'        => 'profit-negative',
+				'average_profit'      => wc_price( 0 ),
+				'average_order_profit' => wc_price( 0 ),
+
 			) );
 		}
 		wp_reset_postdata();
