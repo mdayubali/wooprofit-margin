@@ -13,7 +13,6 @@ if ( file_exists( $file_to_include ) ) {
     <p><?php esc_html_e('Date Range', 'wooprofit-margin'); ?></p>
     <form name="custom-date-range-form" id="custom-date-range-form" method="post">
         <select id="date-range-select" class="nice-select">
-<!--            <option value="custom">--><?php //esc_html_e('Custom', 'wooprofit-margin'); ?><!--</option>-->
             <option value="today"><?php esc_html_e('Today', 'wooprofit-margin'); ?></option>
             <option value="yesterday"><?php esc_html_e('Yesterday', 'wooprofit-margin'); ?></option>
             <option value="last-7-days"><?php esc_html_e('Last 7 Days', 'wooprofit-margin'); ?></option>
@@ -22,13 +21,12 @@ if ( file_exists( $file_to_include ) ) {
             <option value="last-month"><?php esc_html_e('Last Month', 'wooprofit-margin'); ?></option>
             <!-- Add more options as needed -->
         </select>
-
-            <input class="" type="text" id="start_date" placeholder="Start Date">
-            <input class="" type="text" id="end_date" placeholder="End Date">
-            <button class="" type="submit" class="button button-primary">Filter</button>
-
+        <input class="" type="text" id="start_date" placeholder="Start Date">
+        <input class="" type="text" id="end_date" placeholder="End Date">
+        <button class="" type="submit" class="button button-primary">Filter</button>
     </form>
 </div>
+
 <div class="wrap">
     <ul class="woocommerce-summary has-4-items flex">
         <div class="woocommerce-summary__item-container col">
@@ -62,7 +60,11 @@ if ( file_exists( $file_to_include ) ) {
         </div>
         <div class="woocommerce-summary__item-container col">
             <p>Total Profit</p>
-            <div id="profit"></div>
+            <div class="flex aligncenter">
+                <div id="profit"></div>
+                <div id="profit-percentage"></div>
+            </div>
+
         </div>
 
     </ul>

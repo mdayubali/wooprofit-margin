@@ -37,17 +37,7 @@ if (class_exists('WC_Settings_Page')) {
 						'type' => 'title',
 						'desc' => '',
 						'id'   => 'cost_settings_section_title'
-					),
-//					'cost_field' => array(
-//						'name' => __('Cost Field', 'wooprofit-margin'),
-//						'type' => 'text',
-//						'desc' => __('Enter the cost value here.', 'wooprofit-margin'),
-//						'id'   => 'cost_settings_cost_field'
-//					),
-//					'section_end' => array(
-//						'type' => 'sectionend',
-//						'id'   => 'cost_settings_section_end'
-//					),
+					)
 				);
 			}
 

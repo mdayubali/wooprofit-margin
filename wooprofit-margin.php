@@ -106,9 +106,10 @@ class Wooprofit_Margin {
 		wp_enqueue_script( 'custom-date-range-script', $assets_dir . 'js/custom-date-range.js', array( 'jquery' ), '1.0', true );
 		wp_enqueue_script( 'nice-select', $assets_dir . 'js/jquery.nice-select.min.js', array(), '1.0', true );
 
-		wp_localize_script( 'custom-date-range-script', 'ajax_params', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+		wp_localize_script( 'custom-date-range-script', 'ajax_params', array(
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			));
 	}
-
 	function wooprofit_admin_menu(): void {
 		add_submenu_page(
 			'wc-admin&path=/analytics/overview',
@@ -319,14 +320,17 @@ class Wooprofit_Margin {
 		$end_date   = isset( $_POST['end_date'] ) ? sanitize_text_field( $_POST['end_date'] ) : '';
 
 		if ( ! $start_date || ! $end_date ) {
-			echo '<p>' . __( 'Please select a valid date range.', 'wooprit-margin' ) . '</p>';
+			echo json_encode([
+				'error' => true,
+				'message' => __( 'Please select a valid date range.', 'wooprofit-margin' ),
+			]);
 			wp_die();
 		}
 
 		$args = array(
-			'limit'        => - 1, // Retrieve all matching orders
-			'status'       => array( 'wc-completed', 'wc-processing', 'wc-on-hold' ), // Order statuses to include
-			'date_created' => $start_date . '...' . $end_date, // Date range for order creation
+			'limit' => -1,
+			'status' => array( 'wc-completed', 'wc-processing', 'wc-on-hold' ),
+			'date_created' => $start_date . '...' . $end_date,
 		);
 
 		$orders = wc_get_orders( $args );
@@ -344,55 +348,49 @@ class Wooprofit_Margin {
 				foreach ( $order->get_items() as $item ) {
 					$product_id   = $item->get_product_id();
 					$product_cost = get_post_meta( $product_id, '_product_cost', true );
-
-					// Ensure that the product cost is a valid number
-					if ( $product_cost === '' ) {
-						$product_cost = 0; // Default to 0 if the meta key does not exist
-					} else {
-						$product_cost = floatval( $product_cost );
-					}
-
+					$product_cost = $product_cost ? floatval( $product_cost ) : 0;
 					$total_cost += $product_cost * $item->get_quantity();
 				}
-
 			}
 
 			$total_profit        = $net_sales - $total_cost;
+			$profit_percentage   = $total_sales ? ($total_profit / $total_sales) * 100 : 0;
 			$profit_class        = $total_profit > 0 ? 'profit-positive' : 'profit-negative';
 			$average_order_value = $total_orders ? $total_sales / $total_orders : 0;
-			$average_profit      = $total_profit / (strtotime($end_date) - strtotime($start_date)) * 86400;
+			$average_profit      = $total_profit / ((strtotime($end_date) - strtotime($start_date)) / (60 * 60 * 24) + 1);
 			$average_order_profit = $total_orders ? $total_profit / $total_orders : 0;
-
 
 			echo json_encode( array(
 				'total_orders'        => $total_orders,
 				'total_sales'         => wc_price( $total_sales ),
 				'net_sales'           => wc_price( $net_sales ),
-				'total_cost'           => wc_price( $total_cost ),
+				'total_cost'          => wc_price( $total_cost ),
 				'average_order_value' => wc_price( $average_order_value ),
 				'profit'              => wc_price( $total_profit ),
+				'profit_percentage'   => round( $profit_percentage, 2 ) . '%',
 				'profit_class'        => $profit_class,
 				'average_profit'      => wc_price( $average_profit ),
 				'average_order_profit' => wc_price( $average_order_profit ),
-
 			) );
 		} else {
 			echo json_encode( array(
 				'total_orders'        => 0,
 				'total_sales'         => wc_price( 0 ),
 				'net_sales'           => wc_price( 0 ),
-				'total_cost'           => wc_price( 0 ),
+				'total_cost'          => wc_price( 0 ),
 				'average_order_value' => wc_price( 0 ),
 				'profit'              => wc_price( 0 ),
+				'profit_percentage'   => '0%',
 				'profit_class'        => 'profit-negative',
 				'average_profit'      => wc_price( 0 ),
 				'average_order_profit' => wc_price( 0 ),
-
 			) );
 		}
 		wp_reset_postdata();
 		wp_die();
 	}
+
+
 }
 
 new Wooprofit_Margin();
