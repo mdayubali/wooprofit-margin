@@ -60,7 +60,6 @@
             </div>
         </div>
 
-
         <!--    Switcher for product exclude-->
         <div class="switch-container excluded-products">
             <label class="switch-label">Exclude Products</label>
