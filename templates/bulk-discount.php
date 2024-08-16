@@ -12,8 +12,7 @@
             </div>
         </div>
 
-
-<!--Discount role -->
+        <!--Discount role -->
         <div class="discount-rules-container">
             <label class="discount-rules-label">Discount Rules</label>
 
@@ -37,11 +36,9 @@
                         <input type="text" id="value-field" placeholder="20" class="value-field"> %
                     </div>
                 </div>
-
         </div>
 
-
-<!--        Apply discount to -->
+        <!--  Apply discount to -->
         <div class="discount-application-container">
             <label class="discount-application-label">Apply discount to:</label>
             <div class="p-relative">
@@ -65,8 +62,6 @@
 
 
         <!--    Switcher for product exclude-->
-
-
         <div class="switch-container excluded-products">
             <label class="switch-label">Exclude Products</label>
             <div class="switch">
@@ -74,13 +69,9 @@
                 <label for="exclude-toggle-switch" class="slider"></label>
             </div>
             <span class="switch-description">
-    <small>Enable if you want to exclude specific products from this rule</small>
-  </span>
+                <small>Enable if you want to exclude specific products from this rule</small>
+            </span>
         </div>
-
- <button>Save</button>
-
-
 
     </form>
 </div>
